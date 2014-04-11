@@ -1,0 +1,20 @@
+{
+  "name": "router",
+  "version": "0.0.0",
+  "authors": [
+    "Gavin King <gavin.king@fronter.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "angular-ui-router": "~0.2.10"
+  }
+}

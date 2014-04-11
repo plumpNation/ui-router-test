@@ -1,0 +1,9 @@
+<!-- partials/plans.html -->
+<h3>Plans menu</h3>
+<a ui-sref="plans.create">Create</a>
+<ul>
+    <li ng-repeat="(index, plan) in plans">
+        <a ui-sref="plans.focus" ng-click="setFocusPlan(index)">{{plan}}</a>
+    </li>
+</ul>
+<div ui-view></div>
