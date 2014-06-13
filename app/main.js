@@ -1,4 +1,6 @@
-var myApp = angular.module('myApp', ['ui.router'])
+'use strict';
+
+angular.module('myApp', ['ui.router'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/plans');
 
@@ -6,7 +8,7 @@ var myApp = angular.module('myApp', ['ui.router'])
             .state('plans', {
                 url: '/plans',
                 templateUrl: 'partials/plans.html',
-                controller: function ($scope, $state) {
+                controller: function ($scope, $state, $window) {
                     $scope.plans = [
                         'Plan 0',
                         'Plan 1',
@@ -30,9 +32,19 @@ var myApp = angular.module('myApp', ['ui.router'])
 
                     $scope.setFocusPlan(0);
 
-                    $scope.$on('$stateChangeStart', function (event, toState) {
-                        console.log(toState);
-                    });
+                    $scope.$on('$stateChangeStart',
+                        function (event, toState, toParams, fromState, fromParams) {
+                            // if any modals are open, close them, remove them, whatever
+                            var modals = document.getElementsByClassName('modal');
+
+                            if (modals.length) {
+                                // stop the navigation
+                                event.preventDefault();
+
+                                angular.element(modals).remove();
+                            }
+                        }
+                    );
                 }
             })
             .state('plans.focus', {
@@ -52,34 +64,6 @@ var myApp = angular.module('myApp', ['ui.router'])
                         document.getElementById('plan-name').focus();
                     }, 0);
                 }
-            })
-
-            /**
-             * This state demonstrates the onEnter and onExit state functionality. In this
-             * specific example, we want to utilise the broswer history to take into consideration
-             * the opening of a dialog/modal. In this way, we can use the back button to close
-             * the modal, a behaviour one expects on some mobile devices.
-             */
-            .state('plans.focus.modal', {
-                url: '/modal',
-                template: '',
-
-                onEnter: function ($state) {
-                    // If there is no modal on the DOM, we shouldn't be in this state.
-                    var modals = document.getElementsByClassName('modal');
-
-                    if (!modals.length) {
-                        console.log('redirected');
-                        $state.go('plans', {}, {location: 'replace'});
-                    }
-                },
-
-                onExit: function () {
-                    // Clean up any modals when we change state
-                    var modals = document.getElementsByClassName('modal');
-
-                    angular.element(modals).remove();
-                }
             });
     })
 
@@ -91,11 +75,11 @@ var myApp = angular.module('myApp', ['ui.router'])
     .directive('modalButton', function () {
         return {
             restrict: 'E',
-            template: '<button ng-transclude ui-sref="plans.focus.modal"></button>',
+            template: '<button ng-transclude></button>',
             transclude: true,
             replace: true,
 
-            controller: function ($scope, $state, $window) {
+            controller: function ($rootScope, $scope) {
 
                 $scope.createModal = function () {
                     var button = document.createElement('button'),
@@ -113,8 +97,8 @@ var myApp = angular.module('myApp', ['ui.router'])
                     angular.element(document.body).append(modal);
 
                     $button.on('click', function () {
-                        $window.history.back();
-                        $scope.$apply();
+                        $button.off('click');
+                        $modal.remove();
                     });
                 };
             },
