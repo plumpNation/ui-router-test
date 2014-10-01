@@ -3,7 +3,13 @@
 <a ui-sref="plans.create">Create</a>
 <ul>
     <li ng-repeat="(index, plan) in plans">
-        <a ui-sref="plans.focus" ng-click="setFocusPlan(index)">{{plan}}</a>
+        <a ui-sref="plans.focus({planId: index})" ng-click="setFocusPlan(index)">{{plan}}</a>
+    </li>
+</ul>
+
+<ul>
+    <li ng-repeat="(index, plan) in plans">
+        <a href="#/plans/focus/{{index}}" ng-click="setFocusPlan(index)">{{plan}}</a>
     </li>
 </ul>
 <div ui-view></div>

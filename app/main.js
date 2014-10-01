@@ -1,6 +1,6 @@
 var myApp = angular.module('myApp', ['ui.router'])
     .config(function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/plans/focus');
+        $urlRouterProvider.otherwise('/plans/focus/0');
 
         $stateProvider
             .state('plans', {
@@ -15,22 +15,19 @@ var myApp = angular.module('myApp', ['ui.router'])
                         'Plan 5'
                     ];
 
-                    $scope.setFocusPlan = function (index) {
-                        $scope.focusPlan = $scope.plans[index];
-                    };
-
                     $scope.createPlan = function (planName) {
                         $scope.plans.push(planName);
                         $scope.setFocusPlan($scope.plans.length - 1);
                         $location.path('/');
                     };
-
-                    $scope.setFocusPlan(0);
                 }
             })
             .state('plans.focus', {
-                url: '/focus',
+                url: '/focus/:planId',
                 templateUrl: 'partials/plans.focus.html',
+                controller: function ($scope, $stateParams) {
+                    $scope.focusPlan = $scope.plans[$stateParams.planId];
+                }
             })
             .state('plans.create', {
                 url: '/create',
