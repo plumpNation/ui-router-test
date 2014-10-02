@@ -6,7 +6,7 @@ var myApp = angular.module('myApp', ['ui.router'])
             .state('plans', {
                 url: '/plans',
                 templateUrl: 'partials/plans.html',
-                controller: function ($scope, $location) {
+                controller: function ($scope, $state, $location) {
                     $scope.plans = [
                         'Plan 1',
                         'Plan 2',
@@ -17,8 +17,7 @@ var myApp = angular.module('myApp', ['ui.router'])
 
                     $scope.createPlan = function (planName) {
                         $scope.plans.push(planName);
-                        $scope.setFocusPlan($scope.plans.length - 1);
-                        $location.path('/');
+                        $state.go('plans.focus', {planId: $scope.plans.length - 1});
                     };
                 }
             })
