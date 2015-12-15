@@ -21,6 +21,8 @@ var myApp = angular.module('myApp', ['ui.router'])
 
                     self.plans = plans;
 
+                    $scope.balls = 'trumpet';
+
                     self.createPlan = function (planName, planDescription) {
                         self.plans.push({
                             'title': planName,
@@ -35,11 +37,28 @@ var myApp = angular.module('myApp', ['ui.router'])
             })
             .state('plans.focus', {
                 url: '/focus/:planId',
-                templateUrl: 'partials/plans.focus.html',
-                controllerAs: 'pfvm',
+                views: {
+                    focusArea: {
+                        templateUrl: 'partials/plans.focus.html',
+                        controllerAs: 'pfvm',
+                        controller: function ($scope, $stateParams) {
+                            this.planDetail = plans[$stateParams.planId - 1];
 
-                controller: function ($stateParams) {
-                    this.planDetail = plans[$stateParams.planId - 1];
+                            console.log($scope.balls);
+                        }
+                    }
+                }
+            })
+            .state('plans.focus.extra', {
+                url: '/extra',
+                views: {
+                    focusAreaInner: {
+                        template: '<div>extra</div>',
+                        controllerAs: 'pfevm',
+                        controller: function ($scope) {
+                            console.log($scope.balls);
+                        }
+                    }
                 }
             })
             .state('plans.create', {
