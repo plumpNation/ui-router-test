@@ -1,5 +1,6 @@
 <!-- partials/state1.list.html -->
 <h3>Create a plan</h3>
-<form ng-submit="createPlan(newPlan)">
-    <input id="plan-name" type="text" ng-model="newPlan" placeholder="name">
+<form ng-submit="pvm.createPlan(newPlanName, newPlanDescription)">
+    <input id="plan-name" type="text" ng-model="newPlanName" placeholder="name">
+    <input id="plan-description" type="text" ng-model="newPlanDescription" placeholder="description">
 </form>

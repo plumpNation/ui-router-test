@@ -1,15 +1,11 @@
 <!-- partials/plans.html -->
 <h3>Plans menu</h3>
 <a ui-sref="plans.create">Create</a>
+
 <ul>
-    <li ng-repeat="(index, plan) in plans">
-        <a ui-sref="plans.focus({planId: index})" ng-click="setFocusPlan(index)">{{plan}}</a>
+    <li ng-repeat="(index, plan) in pvm.plans">
+        <a ui-sref="plans.focus({planId: index + 1})">{{plan.title}}</a>
     </li>
 </ul>
 
-<ul>
-    <li ng-repeat="(index, plan) in plans">
-        <a href="#/plans/focus/{{index}}" ng-click="setFocusPlan(index)">{{plan}}</a>
-    </li>
-</ul>
 <div ui-view></div>
